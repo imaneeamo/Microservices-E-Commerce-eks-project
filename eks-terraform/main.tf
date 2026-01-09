@@ -39,7 +39,7 @@ data "aws_security_group" "selected" {
 # ----------------------------
 resource "aws_eks_cluster" "eks" {
   name     = "project-eks"
-  role_arn = "arn:aws:iam::851725605085:role/c191399a4934151l13164515t1w851725-LabEksClusterRole-NJFiJXO33QU3"
+  role_arn = "arn:aws:iam::730335625185:role/c191399a4934151l13165766t1w730335-LabEksClusterRole-uhfeGzI4bV9p"
 
   vpc_config {
     subnet_ids         = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
@@ -59,7 +59,7 @@ resource "aws_eks_cluster" "eks" {
 resource "aws_eks_node_group" "node-grp" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "project-node-group"
-  node_role_arn   = "arn:aws:iam::851725605085:role/c191399a4934151l13164515t1w851725605-LabEksNodeRole-5HJfr5YOGesw"
+  node_role_arn   = "arn:aws:iam::730335625185:role/c191399a4934151l13165766t1w730335625-LabEksNodeRole-PlMvaC5lMgTp"
   subnet_ids      = [data.aws_subnet.subnet-1.id, data.aws_subnet.subnet-2.id]
   capacity_type   = "ON_DEMAND"
   disk_size       = 20
