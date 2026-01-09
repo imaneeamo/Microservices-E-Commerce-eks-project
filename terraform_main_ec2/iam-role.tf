@@ -1,17 +1,11 @@
-resource "aws_iam_role" "iam-role" {
-  name               = var.iam-role
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
+# بدلاً من إنشاء IAM Role جديد (غير مسموح في Learner Lab)
+# نستدعي الدور الموجود مسبقًا باسم LabRole
+
+data "aws_iam_role" "lab_role" {
+  name = "LabRole"
 }
-EOF
-}
+
+# إذا كان هناك موارد أخرى تحتاج الـ ARN أو الـ Name للدور
+# يمكنك استخدام:
+# data.aws_iam_role.lab_role.arn
+# data.aws_iam_role.lab_role.name
