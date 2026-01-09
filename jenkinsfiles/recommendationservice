@@ -15,10 +15,10 @@ pipeline {
         stage("Docker Image Build") {
             steps {
                 script {
-                    dir('src/recommendationservice') {
+                    dir('src/frontend') {
                         sh 'docker system prune -f'
                         sh 'docker container prune -f'
-                        sh 'docker build -t recommendationservice .'
+                        sh 'docker build -t frontend .'
                     }
                 }
             }
@@ -31,10 +31,10 @@ pipeline {
                     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 730335625185.dkr.ecr.us-east-1.amazonaws.com
 
                     # Tag the image with the correct repository URL
-                    docker tag recommendationservice:latest 730335625185.dkr.ecr.us-east-1.amazonaws.com/recommendationservice:${BUILD_NUMBER}
+                    docker tag frontend:latest 730335625185.dkr.ecr.us-east-1.amazonaws.com/frontend:${BUILD_NUMBER}
 
                     # Push the image to ECR
-                    docker push 730335625185.dkr.ecr.us-east-1.amazonaws.com/recommendationservice:${BUILD_NUMBER}
+                    docker push 730335625185.dkr.ecr.us-east-1.amazonaws.com/frontend:${BUILD_NUMBER}
                     '''
                 }
             }
@@ -44,9 +44,9 @@ pipeline {
                 GIT_REPO_NAME = "Microservices-E-Commerce-eks-project"
                 GIT_EMAIL     = "imaneamokrane3@gmail.com"
                 GIT_USER_NAME = "imaneeamo"
-                IMAGE_NAME    = "recommendationservice"
-                REPO_URL      = "730335625185.dkr.ecr.us-east-1.amazonaws.com/recommendationservice"
-                YAML_FILE     = "recommendationservice.yaml"
+                IMAGE_NAME    = "frontend"
+                REPO_URL      = "730335625185.dkr.ecr.us-east-1.amazonaws.com/frontend"
+                YAML_FILE     = "frontend.yaml"
             }
             steps {
                 dir('kubernetes-files') {
