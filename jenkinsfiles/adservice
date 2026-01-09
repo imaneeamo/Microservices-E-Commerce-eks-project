@@ -3,11 +3,11 @@ pipeline {
 
     environment {
         GIT_REPO_NAME = "Microservices-E-Commerce-eks-project"
-        GIT_EMAIL = "Yaswanth.arumulla@gmail.com"
-        GIT_USER_NAME = "arumullayaswanth"
-        IMAGE_NAME = "adservice"
-        REPO_URL = "242201296943.dkr.ecr.us-east-1.amazonaws.com/adservice"
-        YAML_FILE = "adservice.yaml"
+        GIT_EMAIL     = "imaneamokrane3@gmail.com"
+        GIT_USER_NAME = "imaneeamo"
+        IMAGE_NAME    = "adservice"
+        REPO_URL      = "730335625185.dkr.ecr.us-east-1.amazonaws.com/adservice"
+        YAML_FILE     = "adservice.yaml"
     }
 
     stages {
@@ -19,7 +19,7 @@ pipeline {
 
         stage('Checkout from Git') {
             steps {
-                git branch: 'master', url: 'https://github.com/arumullayaswanth/Microservices-E-Commerce-eks-project.git'
+                git branch: 'master', url: 'https://github.com/imaneeamo/Microservices-E-Commerce-eks-project.git'
             }
         }
 
@@ -39,9 +39,14 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 242201296943.dkr.ecr.us-east-1.amazonaws.com
-                    docker tag adservice:latest 242201296943.dkr.ecr.us-east-1.amazonaws.com/adservice:${BUILD_NUMBER}
-                    docker push 242201296943.dkr.ecr.us-east-1.amazonaws.com/adservice:${BUILD_NUMBER}
+                    # Authenticate Docker to your AWS ECR registry
+                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 730335625185.dkr.ecr.us-east-1.amazonaws.com
+
+                    # Tag the image with the correct repository URL
+                    docker tag adservice:latest 730335625185.dkr.ecr.us-east-1.amazonaws.com/adservice:${BUILD_NUMBER}
+
+                    # Push the image to ECR
+                    docker push 730335625185.dkr.ecr.us-east-1.amazonaws.com/adservice:${BUILD_NUMBER}
                     '''
                 }
             }
@@ -56,6 +61,7 @@ pipeline {
                             git config user.name "${GIT_USER_NAME}"
                             echo $BUILD_NUMBER
 
+                            # Update image in deployment YAML
                             sed -i "s#image:.*#image: ${REPO_URL}:$BUILD_NUMBER#g" ${YAML_FILE}
                             git add .
                             git commit -m "Update ${IMAGE_NAME} Image to version ${BUILD_NUMBER}"
