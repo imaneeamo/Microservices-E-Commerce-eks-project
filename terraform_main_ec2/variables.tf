@@ -1,4 +1,3 @@
-
 variable "region" {
   description = "AWS region"
   type = string
@@ -84,4 +83,4 @@ variable "instance_name" {
   type        = string
   default     = "Jumphost-server"
 }
-#
+#image
